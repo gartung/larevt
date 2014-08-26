@@ -205,7 +205,7 @@ namespace caldata {
       // adaptive baseline subtraction
       if(fBaseSampleBins) SubtractBaseline(holder, fBaseSampleBins);
 
-      wirecol->push_back(recob::Wire(holder,digitVec));
+      wirecol->push_back(recob::Wire(holder,*digitVec,*geom));
     }
 
 

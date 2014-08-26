@@ -285,7 +285,7 @@ namespace caldata{
       }  
 
       // Make a single ROI that spans the entire data size
-      wirecol->push_back(recob::Wire(holder,digitVec));
+      wirecol->push_back(recob::Wire(holder,*digitVec,*geom));
     }
     
     if(wirecol->size() == 0)

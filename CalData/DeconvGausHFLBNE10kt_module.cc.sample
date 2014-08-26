@@ -326,7 +326,7 @@ namespace deconvgaushf {
       }  
 
       
-      //wirecol->push_back(recob::Wire(holder,digitVec));
+      //wirecol->push_back(recob::Wire(holder,*digitVec,*geom));
       
       //if(wirecol->size() == 0)
       //mf::LogWarning("DeconvGausHFLBNE10kt") << "No wires made for this event.";

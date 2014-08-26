@@ -198,7 +198,7 @@ namespace caldata{
       // Find corresponding wire.
       std::vector<double> signal(fft->FFTSize());
       for(unsigned int wd = 0; wd < wvec.size(); ++wd){
-	if (wvec[wd]->RawDigit() == rdvec[rd]){
+	if (wvec[wd]->Channel() == rdvec[rd]->Channel()){
           std::vector<float> wirSig = wvec[wd]->Signal();
           if(wirSig.size() > signal.size()) {
             LOG_DEBUG("CalWireAna")<<"Incompatible vector size "<<wirSig.size()

@@ -241,7 +241,7 @@ int cluster::SmallClusterFilter::GetPlaneAndTPC(art::Ptr<recob::Hit> a, //the hi
 						unsigned int &t, //time
 						unsigned int &w) //wire
 {
-  unsigned int channel = a->Wire()->RawDigit()->Channel(); 
+  unsigned int channel = a->Channel(); 
   geom->ChannelToWire(channel);
   p = a -> WireID().Plane;
   t = a -> PeakTime();
