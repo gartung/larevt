@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 simple_plugin(CalWireAna "module"
                         Filters
@@ -91,3 +94,4 @@ install_fhicl()
 install_source()
 
 add_subdirectory(test)
+ENDIF()

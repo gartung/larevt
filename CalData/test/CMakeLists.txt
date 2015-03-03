@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 cet_enable_asserts()
 
 simple_plugin(FFTTest "module"
@@ -20,3 +23,4 @@ install_headers()
 install_fhicl()
 install_source()
 
+ENDIF()

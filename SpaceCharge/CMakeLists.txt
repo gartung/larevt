@@ -1,3 +1,6 @@
+IF(ALT_CMAKE)
+INCLUDE(altCMakeLists.cmake)
+ELSE()
 
 # for classes_def.xml!!
 include_directories( ${CMAKE_CURRENT_SOURCE_DIR} )
@@ -40,3 +43,4 @@ simple_plugin(SpaceCharge "service"
 install_headers()
 install_fhicl()
 install_source()
+ENDIF()
