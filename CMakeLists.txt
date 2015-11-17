@@ -62,6 +62,7 @@ include(BuildPlugins)
 
 # source
 add_subdirectory(CalData)
+add_subdirectory(DetectorInfo)
 add_subdirectory(Filters)
 add_subdirectory(CalibrationDBI)
 add_subdirectory(SpaceCharge)
