@@ -57,6 +57,14 @@ argoneut_finalstateparticlefilter:
  PDG:              [3122, -13]   #pdg codes of final state particles in an event that you want to pick 
 }
 
+microboone_neutrinoenergyfilter:
+{
+ module_type: "NeutrinoEnergyFilter"
+ GenieModuleLabel: "generator"     
+ EnuMin: 0.05
+ EnuMax: 0.2
+}
+
 microboone_finalstateselectfilter:
 {
  isVerbose: false
