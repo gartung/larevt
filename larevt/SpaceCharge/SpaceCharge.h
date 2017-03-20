@@ -27,8 +27,8 @@ namespace spacecharge{
       virtual bool EnableSimSpatialSCE() const = 0;
       virtual bool EnableSimEfieldSCE() const = 0;
       virtual bool EnableCorrSCE() const = 0;
-      virtual std::vector<double> GetPosOffsets(double xVal, double yVal, double zVal) const = 0;
-      virtual std::vector<double> GetEfieldOffsets(double xVal, double yVal, double zVal) const = 0;
+      virtual void GetPosOffsets(double xVal, double yVal, double zVal, std::vector<double>&) const = 0;
+      virtual void GetEfieldOffsets(double xVal, double yVal, double zVal, std::vector<double>&) const = 0;
 
     protected:
 

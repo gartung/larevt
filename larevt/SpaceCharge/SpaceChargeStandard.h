@@ -41,16 +41,30 @@ namespace spacecharge {
       bool EnableSimSpatialSCE() const override;
       bool EnableSimEfieldSCE() const override;
       bool EnableCorrSCE() const override;
-      std::vector<double> GetPosOffsets(double xVal, double yVal, double zVal) const override;
-      std::vector<double> GetEfieldOffsets(double xVal, double yVal, double zVal) const override;
- 
+      void GetPosOffsets(double xVal, double yVal, double zVal, std::vector<double>&) const override;
+      void GetEfieldOffsets(double xVal, double yVal, double zVal, std::vector<double>&) const override;
+
+      typedef enum sc_representations {
+	kParametric,
+	kUnknown
+      } SpaceChargeRepresentation_t;
+      
     private:
     protected:
 
-      std::vector<double> GetPosOffsetsParametric(double xVal, double yVal, double zVal) const;
-      double GetOnePosOffsetParametric(double xVal, double yVal, double zVal, std::string axis) const;
-      std::vector<double> GetEfieldOffsetsParametric(double xVal, double yVal, double zVal) const;
-      double GetOneEfieldOffsetParametric(double xVal, double yVal, double zVal, std::string axis) const;
+      void ParseRepresentationType(std::string);
+      void SetPosition(double xVal, double yVal, double zVal) const;
+      
+      void GetPosOffsetsParametric(double xVal, double yVal, double zVal,std::vector<double>&) const;
+      double GetXPosOffsetParametric() const;
+      double GetYPosOffsetParametric() const;
+      double GetZPosOffsetParametric() const;
+      
+      void GetEfieldOffsetsParametric(double xVal, double yVal, double zVal,std::vector<double>&) const;
+      double GetXEfieldOffsetParametric() const;
+      double GetYEfieldOffsetParametric() const;
+      double GetZEfieldOffsetParametric() const;
+
       double TransformX(double xVal) const;
       double TransformY(double yVal) const;
       double TransformZ(double zVal) const;
@@ -60,8 +74,13 @@ namespace spacecharge {
       bool fEnableSimEfieldSCE;
       bool fEnableCorrSCE;
       
-      std::string fRepresentationType;
+      SpaceChargeRepresentation_t fRepresentationType;
       std::string fInputFilename;
+
+      static double fPos[3];
+      static double parA[6][7];
+      static double parB[6];
+
       
       TGraph **g1_x = new TGraph*[7];
       TGraph **g2_x = new TGraph*[7];
