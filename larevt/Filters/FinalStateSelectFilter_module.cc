@@ -58,6 +58,7 @@ namespace filt {
     std::vector<int> fPDGCount;/// List of N's for the particle PDGs  
     std::vector<bool> fPDGCountExclusive;/// If true:  Only select events with EXACTLY  that number of particles
                                          /// If false:      select events with AT LEAST that number of particles  
+    std::vector<double> fMinEnergy;      ///Minimum Energy to be counted 
     TH1D* fSelectedEvents;
     TH1D* fTotalEvents;
 
@@ -91,8 +92,15 @@ namespace filt{
     fInclusive         = p.get< bool >("isInclusive");        
     fPDGCount          = p.get< std::vector<int> >("PDGCount");
     fPDGCountExclusive = p.get< std::vector<bool> >("PDGCountExclusivity");
-
-
+    fMinEnergy         = p.get< std::vector<double> >("MinimumEnergy");
+    
+    if(fMinEnergy.size() == 0){
+      fMinEnergy.resize(fPDG.size());
+      
+      for(int i = 0; i < int(fPDG.size()); i++){
+	fMinEnergy[i] = 0;
+      }      
+    }
   } 
 
   //-------------------------------------------------
@@ -136,7 +144,20 @@ namespace filt{
       if(part.StatusCode()== 1 && abs(part.PdgCode()) < 100000000 
 	 && abs(part.PdgCode()) != 12 && abs(part.PdgCode()) != 14 && abs(part.PdgCode()) != 16){       
 
-	finalstateparticles.push_back(part.PdgCode());
+	
+	if(std::find(fPDG.begin(), fPDG.end(), part.PdgCode()) != fPDG.end()){
+	  
+	  int ele = std::find(fPDG.begin(), fPDG.end(), part.PdgCode()) - fPDG.begin();
+
+	  std::cout << "part : " << part.PdgCode() << ", found " << fPDG[ele] << ", E " << part.Trajectory().Momentum(0).E() << ", cut: " << fMinEnergy[ele] << std::endl;
+
+	  if(part.Trajectory().Momentum(0).E() > fMinEnergy[ele]){
+	    finalstateparticles.push_back(part.PdgCode());
+	  }
+	}
+	else{
+	  finalstateparticles.push_back(part.PdgCode());
+	}
 
 	//This is to address when GENIE doesn't report the direct parent of multiple final state photons 
 	if(part.PdgCode() == 22){
