@@ -85,25 +85,35 @@ microboone_containmentfilter:
     module_type: "ContainmentFilter"
     GenieModuleLabel: "generator" 
     MCRecoModuleLabel: "mcreco" 
-    FidDistX: 10
-    FidDistY: 10
-    FidDistZ: 10
+    FidDistX: 10         # Fiducial volume, in cm
+    FidDistY: 10         # Fiducial volume, in cm
+    FidDistZ: 10         # Fiducial volume, in cm
     InclusiveSelection: false
     CheckNeutrinoMuon: true
     CheckNeutrinoElectron: false
-    CheckNeutrinoPhotons: true
-    CheckNeutrinoVertex: [true, true]
-    CheckMuonFullContainment: [true, true]
+    CheckNeutrinoPhotons: false
+    CheckNeutrinoVertex: [false, false]
+    CheckMuonFullContainment: [false, false]
     CheckMuonFracLength: [false, false]
     CheckMuonFracEnergy: [false, false]
     CheckElectronFracEnergy: [false, false]
-    CheckPhotonConversionLocation: [true, true]
+    CheckPhotonConversionLocation: [false, false]
     CheckPhotonFracEnergy: [false, false]
     OnlyExceptThisManyPhotons: [false, 2]
 
-    MinimumContainedTrackLength: 100
-    MinimumContainedTrackEnergy: 50
-    MinimumContainedShowerEnergy: 50
+    MinimumContainedTrackLength: 100  # Length of contained track, in cm
+    MinimumContainedTrackEnergy: .5   # Fraction of contained track energy
+    MinimumContainedShowerEnergy: .5  # Fraction of contained shower energy
+
+ ######
+ # Commentary by Joseph 
+ # 
+ # This example only checks that the neutrino interacted
+ # in the defined fiducial volume
+ #
+ ######
+
+
 }
 
 
