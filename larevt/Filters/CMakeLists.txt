@@ -23,6 +23,7 @@ art_make(
           MODULE_LIBRARIES larevt_Filters
                            lardataobj_RawData
                            nusimdata_SimulationBase
+			   lardataobj_MCBase
           SERVICE_LIBRARIES larevt_Filters
                             ${ART_FRAMEWORK_PRINCIPAL}
                             ${ART_FRAMEWORK_SERVICES_REGISTRY}
