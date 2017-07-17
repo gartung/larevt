@@ -79,6 +79,34 @@ microboone_finalstateselectfilter:
  ######
 }
 
+microboone_containmentfilter:
+{
+    isVerbose: false
+    module_type: "ContainmentFilter"
+    GenieModuleLabel: "generator" 
+    MCRecoModuleLabel: "mcreco" 
+    FidDistX: 10
+    FidDistY: 10
+    FidDistZ: 10
+    InclusiveSelection: false
+    CheckNeutrinoMuon: true
+    CheckNeutrinoElectron: false
+    CheckNeutrinoPhotons: true
+    CheckNeutrinoVertex: [true, true]
+    CheckMuonFullContainment: [true, true]
+    CheckMuonFracLength: [false, false]
+    CheckMuonFracEnergy: [false, false]
+    CheckElectronFracEnergy: [false, false]
+    CheckPhotonConversionLocation: [true, true]
+    CheckPhotonFracEnergy: [false, false]
+    OnlyExceptThisManyPhotons: [false, 2]
+
+    MinimumContainedTrackLength: 100
+    MinimumContainedTrackEnergy: 50
+    MinimumContainedShowerEnergy: 50
+}
+
+
 standard_smallclusterfilter:
 {
  module_type:			"SmallClusterFilter"
