@@ -2,7 +2,7 @@
 //
 // ContainmentFilter class:
 // Algoritm to produce a filtered event file having
-// events with user-defined containment
+// events with user-defined containment run on G4 files after MCReco
 //
 // Joseph Zennamo, UChicago, 2017
 // jzennamo@uchicago.edu
@@ -285,7 +285,7 @@ namespace filt{
       
       if(fCheckNeutrinoElectron){
 
-	if(int(mcslist.size()) == 0){ std::cout << "No Showers To Check?!" << std::endl; }
+	if(int(mcslist.size()) == 0){ std::cout << "No Showers To Check." << std::endl; }
 	
 	for(auto const mcs : mcslist){
 	  
@@ -318,7 +318,6 @@ namespace filt{
 	
 	for(auto const mcs : mcslist){
 	  
-	  std::cout << "Shower PDG : " << abs(mcs->PdgCode()) << ", vertex : " << isFromNeutrinoVertex(mc, mcs) << std::endl; 	  
 	  if(abs(mcs->PdgCode()) == 22  && isFromNeutrinoVertex(mc, mcs) ){	      
 	    	    
 	    if(fCheckPhotonConversionLocation.first){
@@ -473,13 +472,10 @@ namespace filt{
     
     double Edep = show->DetProfile().Momentum().E();
     double Etot = show->Start().E();
-
-    std::cout << "Edep : " << Edep << ", Etot : " << Etot << std::endl; 
     
     double Edepfrac = Edep/Etot;
     
     if(Edepfrac > 1 || !(std::isfinite(Edepfrac))){
-      std::cout << "You're stupid : isEfracContainedinAV" << std::endl; 
       Edepfrac = 0;
     }
     
@@ -498,7 +494,6 @@ namespace filt{
     double Edepfrac = Edep/Etot;
     
    if(Edepfrac > 1 || !(std::isfinite(Edepfrac))){
-     std::cout << "You're stupid : isEfracContainedinAV" << std::endl; 
      Edepfrac = 0;
    }
    
