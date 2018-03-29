@@ -24,7 +24,16 @@ namespace lariov {
   class DetPedestalProvider {
   
     public:
-    
+      
+      /// Default constructor
+      DetPedestalProvider() = default;
+      
+      // do not allow for copies or moves of this class
+      DetPedestalProvider(DetPedestalProvider const&) = delete;
+      DetPedestalProvider(DetPedestalProvider&&) = delete;
+      DetPedestalProvider& operator = (DetPedestalProvider const&) = delete;
+      DetPedestalProvider& operator = (DetPedestalProvider&&) = delete;
+
       virtual ~DetPedestalProvider() = default;
        
       /// Retrieve pedestal information     

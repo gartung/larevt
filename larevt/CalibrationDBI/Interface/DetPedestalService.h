@@ -4,11 +4,7 @@
 #include "art/Framework/Services/Registry/ServiceMacros.h"
 
 #include "larcore/CoreUtils/ServiceUtil.h" // unused; for includer's convenience
-
-//forward declarations
-namespace lariov {
-  class DetPedestalProvider;
-}
+#include "larevt/CalibrationDBI/Interface/DetPedestalProvider.h"
 
 namespace lariov{
 

@@ -19,11 +19,6 @@
 // Framework libraries
 #include "art/Framework/Services/Registry/ServiceMacros.h"
 
-//forward declarations
-namespace lariov {
-  class ChannelStatusProvider;
-}
-
 namespace lariov {
 
   /**
