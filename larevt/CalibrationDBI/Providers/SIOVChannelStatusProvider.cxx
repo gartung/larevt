@@ -13,8 +13,6 @@
 #include "SIOVChannelStatusProvider.h"
 
 // LArSoft libraries
-#include "art/Framework/Services/Registry/ServiceHandle.h"
-#include "larcore/Geometry/Geometry.h"
 #include "WebError.h"
 #include "larevt/CalibrationDBI/IOVData/IOVDataConstants.h"
 
@@ -30,9 +28,8 @@ namespace lariov {
   
   
   //----------------------------------------------------------------------------
-  SIOVChannelStatusProvider::SIOVChannelStatusProvider(fhicl::ParameterSet const& pset)
+  SIOVChannelStatusProvider::SIOVChannelStatusProvider(fhicl::ParameterSet const& pset, const geo::GeometryCore* geo)
     : DatabaseRetrievalAlg(pset.get<fhicl::ParameterSet>("DatabaseRetrievalAlg"))
-    , fDefault(0)
   {
 
     bool UseDB    = pset.get<bool>("UseDB", false);
@@ -47,7 +44,13 @@ namespace lariov {
     
     if (fDataSource == DataSource::Default) {
       std::cout << "Using default channel status value: "<<kGOOD<<"\n";
-      fDefault.SetStatus(kGOOD);
+      ChannelStatus cs(kGOOD);
+      
+      for (geo::wire_id_iterator itW = geo->begin_wire_id(); itW != geo->end_wire_id(); ++itW) {
+        DBChannelID_t ch = geo->PlaneWireToChannel(*itW);
+	cs.SetChannel(ch);
+	fData.AddOrReplaceRow(cs);
+      }      
     } 
     else if (fDataSource == DataSource::File) {
       cet::search_path sp("FW_SEARCH_PATH");
@@ -75,6 +78,8 @@ namespace lariov {
     }
   }
   
+  
+  //----------------------------------------------------------------------------
   bool SIOVChannelStatusProvider::Update(DBTimeStamp_t ts) {
     
     fNewNoisy.Clear();
@@ -103,9 +108,6 @@ namespace lariov {
   
   //----------------------------------------------------------------------------
   const ChannelStatus& SIOVChannelStatusProvider::GetChannelStatus(raw::ChannelID_t ch) const {
-    if (fDataSource == DataSource::Default) {
-      return fDefault;
-    }
     
     if (fNewNoisy.HasChannel(rawToDBChannel(ch))) {
       return fNewNoisy.GetRow(rawToDBChannel(ch));
@@ -122,25 +124,15 @@ namespace lariov {
     
     ChannelSet_t retSet;
     retSet.clear();
-    DBChannelID_t maxChannel = art::ServiceHandle<geo::Geometry>()->Nchannels() - 1;
-    if (fDataSource == DataSource::Default) {
-      if (fDefault.Status() == status) {
-	std::vector<DBChannelID_t> chs;
-	for (DBChannelID_t ch=0; ch != maxChannel; ++ch) {
-	  chs.push_back(ch);
-	}
-	retSet.insert(chs.begin(), chs.end());
-      }
+    
+    const std::vector<ChannelStatus>& data = fData.Data();
+    std::vector<DBChannelID_t> chs;
+    for (auto it = data.begin(); it != data.end(); ++it) {
+      if (it->Status() == status) chs.push_back(it->Channel());
     }
-    else {
-      std::vector<DBChannelID_t> chs;
-      for (DBChannelID_t ch=0; ch != maxChannel; ++ch) {
-	if (this->GetChannelStatus(ch).Status() == status) chs.push_back(ch);
-      }
-
-      retSet.insert(chs.begin(), chs.end());
-    }
-    return retSet;  
+    
+    retSet.insert(chs.begin(),chs.end());
+    return retSet;
   }
   
   

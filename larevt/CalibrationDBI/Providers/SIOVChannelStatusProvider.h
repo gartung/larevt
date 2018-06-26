@@ -15,6 +15,7 @@
 #include "larevt/CalibrationDBI/Providers/DatabaseRetrievalAlg.h"
 #include "larevt/CalibrationDBI/IOVData/ChannelStatus.h"
 #include "larevt/CalibrationDBI/IOVData/Snapshot.h"
+#include "larcorealg/Geometry/GeometryCore.h"
 
 // Utility libraries
 #include "fhiclcpp/ParameterSet.h"
@@ -37,7 +38,7 @@ namespace lariov {
     public:
     
       /// Constructor
-      SIOVChannelStatusProvider(fhicl::ParameterSet const& pset);
+      SIOVChannelStatusProvider(fhicl::ParameterSet const& pset, const geo::GeometryCore* geo);
     
       ///Default destructor
       virtual ~SIOVChannelStatusProvider() = default;
@@ -112,7 +113,6 @@ namespace lariov {
       DataSource::ds fDataSource;
       Snapshot<ChannelStatus> fData;
       Snapshot<ChannelStatus> fNewNoisy;
-      ChannelStatus fDefault;
       
       ChannelSet_t GetChannelsWithStatus(chStatus status) const;
     

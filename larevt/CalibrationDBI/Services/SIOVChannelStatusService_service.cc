@@ -7,6 +7,7 @@
 #include "fhiclcpp/ParameterSet.h"
 #include "larevt/CalibrationDBI/Interface/ChannelStatusService.h"
 #include "larevt/CalibrationDBI/Providers/SIOVChannelStatusProvider.h"
+#include "larcore/Geometry/Geometry.h"
 
 namespace lariov{
 
@@ -44,9 +45,11 @@ DECLARE_ART_SERVICE_INTERFACE_IMPL(lariov::SIOVChannelStatusService, lariov::Cha
 namespace lariov{
 
   SIOVChannelStatusService::SIOVChannelStatusService(fhicl::ParameterSet const& pset, art::ActivityRegistry& reg) 
-  : fProvider(pset.get<fhicl::ParameterSet>("ChannelStatusProvider"))
-  {
+  : fProvider(pset.get<fhicl::ParameterSet>("ChannelStatusProvider"), (const geo::GeometryCore*)art::ServiceHandle<geo::Geometry>()->provider())
+  { 
    
+    //const geo::GeometryCore* geo = art::ServiceHandle<geo::Geometry>()->provider();
+    //fProvider = SIOVChannelStatusProvider(
     //register callback to update local database cache before each event is processed
     reg.sPreProcessEvent.watch(this, &SIOVChannelStatusService::PreProcessEvent);
     
