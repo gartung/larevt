@@ -34,7 +34,10 @@ bool spacecharge::SpaceChargeStandard::Configure(fhicl::ParameterSet const& pset
 {  
   fEnableSimSpatialSCE = pset.get<bool>("EnableSimSpatialSCE");
   fEnableSimEfieldSCE = pset.get<bool>("EnableSimEfieldSCE");
-  fEnableCorrSCE = pset.get<bool>("EnableCorrSCE");
+  fEnableCalSpatialSCE = pset.get<bool>("EnableCalSpatialSCE");
+  fEnableCalEfieldSCE = pset.get<bool>("EnableCalEfieldSCE");
+  fEnableDataDrivenSpatialSCE = pset.get<bool>("EnableDataDrivenSpatialSCE");
+  fEnableDataDrivenEfieldSCE = pset.get<bool>("EnableDataDrivenEfieldSCE");
   
   // check that the old obsoleted parameter is not in configuration:
   if (pset.has_key("EnableSimulationSCE")) {
@@ -48,6 +51,7 @@ bool spacecharge::SpaceChargeStandard::Configure(fhicl::ParameterSet const& pset
     fInputFilename = pset.get<std::string>("InputFilename");
 
     std::string fname;
+    std::cout << "filename for SCE -- " << fInputFilename << ", " << fname << std::endl;
     cet::search_path sp("FW_SEARCH_PATH");
     sp.find_file(fInputFilename,fname);
 
@@ -137,7 +141,12 @@ bool spacecharge::SpaceChargeStandard::Configure(fhicl::ParameterSet const& pset
     infile->Close();
   }
 
-  if(fEnableCorrSCE == true)
+  if((fEnableCalSpatialSCE == true) || (fEnableCalEfieldSCE == true))
+  {
+    // Grab other parameters from pset  
+  }
+
+  if((fEnableDataDrivenSpatialSCE == true) || (fEnableDataDrivenEfieldSCE == true))
   {
     // Grab other parameters from pset  
   }
@@ -171,9 +180,32 @@ bool spacecharge::SpaceChargeStandard::EnableSimEfieldSCE() const
 
 //----------------------------------------------------------------------------
 /// Return boolean indicating whether or not to apply SCE corrections
-bool spacecharge::SpaceChargeStandard::EnableCorrSCE() const
+bool spacecharge::SpaceChargeStandard::EnableCalSpatialSCE() const
 {
-  return fEnableCorrSCE;
+  return fEnableCalSpatialSCE;
+}
+
+//----------------------------------------------------------------------------
+/// Return boolean indicating whether or not to apply SCE corrections
+bool spacecharge::SpaceChargeStandard::EnableCalEfieldSCE() const
+{
+  return fEnableCalEfieldSCE;
+}
+
+//----------------------------------------------------------------------------
+/// Return boolean indicating whether or not to apply SCE corrections from 
+/// data driven calibration map for spatial distortions
+bool spacecharge::SpaceChargeStandard::EnableDataDrivenSpatialSCE() const
+{
+  return fEnableDataDrivenSpatialSCE;
+}
+
+//----------------------------------------------------------------------------
+/// Return boolean indicating whether or not to apply SCE corrections from 
+/// data driven calibration map for E field distortions
+bool spacecharge::SpaceChargeStandard::EnableDataDrivenEfieldSCE() const
+{
+  return fEnableDataDrivenEfieldSCE;
 }
 
 //----------------------------------------------------------------------------
@@ -196,6 +228,11 @@ geo::Vector_t spacecharge::SpaceChargeStandard::GetPosOffsets(geo::Point_t const
   }
 
   return { thePosOffsets[0], thePosOffsets[1], thePosOffsets[2] };
+}
+
+geo::Vector_t spacecharge::SpaceChargeStandard::GetCalPosOffsets(geo::Point_t const& point) const
+{
+	return { 0.0, 0.0, 0.0 };
 }
 
 //----------------------------------------------------------------------------
@@ -348,6 +385,11 @@ geo::Vector_t spacecharge::SpaceChargeStandard::GetEfieldOffsets(geo::Point_t co
     theEfieldOffsets.resize(3,0.0);
 
   return { -theEfieldOffsets[0], -theEfieldOffsets[1], -theEfieldOffsets[2] };
+}
+
+geo::Vector_t spacecharge::SpaceChargeStandard::GetCalEfieldOffsets(geo::Point_t const& point) const
+{
+  return {0.0, 0.0, 0.0};
 }
 
 //----------------------------------------------------------------------------
