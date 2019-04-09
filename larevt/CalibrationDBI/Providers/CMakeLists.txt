@@ -1,6 +1,6 @@
-cet_find_library(LIBWDA NAMES wda PATHS ENV LIBWDA_LIB NO_DEFAULT_PATH)
+cet_find_library( LIBWDA NAMES wda  )
 
-include_directories($ENV{LIBWDA_FQ_DIR}/include)
+include_directories( ${LIBWDA_INC_DIR} )
 
 art_make(LIB_LIBRARIES
            larevt_CalibrationDBI_IOVData
