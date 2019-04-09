@@ -3,10 +3,9 @@ cet_enable_asserts()
 simple_plugin ( SimpleChannelStatusTest "module"
                     larevt_Filters
                     ${MF_MESSAGELOGGER}
-                    
                     ${FHICLCPP}
                     cetlib cetlib_except
-                    ${ROOT_BASIC_LIB_LIST}
+                    ${ROOT_Core_LIBRARY}
               )
 
 cet_test(ChannelStatusServiceTest HANDBUILT

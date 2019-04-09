@@ -9,7 +9,7 @@
 #		   ${ART_FRAMEWORK_PRINCIPAL}
 #                   ${ART_FRAMEWORK_BASIC}
 #		   ${ART_FRAMEWORK_SERVICES_REGISTRY}
-#		   ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_CORE}
+#		   ${ART_ROOT_IO_TFILE_SUPPORT} ${ROOT_Core_LIBRARY}
 #		   ${ART_ROOT_IO_TFILESERVICE_SERVICE}
 #		   art_Persistency_Common canvas
 #		   art_Persistency_Provenance canvas
@@ -18,10 +18,10 @@
 #		   
 #		   ${FHICLCPP}
 #		   cetlib cetlib_except
-#		   ${ROOT_GEOM}
-#		   ${ROOT_XMLIO}
-#		   ${ROOT_GDML}
-#		   ${ROOT_BASIC_LIB_LIST}
+#		   ${ROOT_Geom_LIBRARY}
+#		   ${ROOT_XMLIO_LIBRARY}
+#		   ${ROOT_Gdml_LIBRARY}
+#		   ${ROOT_LIBRARIES}
 #		)
 
 #simple_plugin(WebReaderService "service"
