@@ -265,9 +265,6 @@ namespace lariov {
     //get full url string
     std::stringstream fullurl;
     
-  //  fullurl << "file:///uboone/app/users/andrzejs/DBhacking_v08_00_00_28/detpmtgains.html"; 
-    
-
     
      fullurl << fURL << "/data?f=" << fFolderName
              << "&t=" << ts.DBStamp();
