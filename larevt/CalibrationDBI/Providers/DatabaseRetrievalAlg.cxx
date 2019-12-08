@@ -11,7 +11,9 @@ namespace lariov {
     std::string foldername = p.get<std::string>("DBFolderName");
     std::string url        = p.get<std::string>("DBUrl");
     std::string tag        = p.get<std::string>("DBTag", "");
-    fFolder.reset(new DBFolder(foldername, url, tag));
+    bool applyScaling      = p.get<bool>("ApplyScaling",false);
+    std::uint64_t Modifier   = p.get<std::uint64_t>("Scaling",0);
+    fFolder.reset(new DBFolder(foldername, url, tag,applyScaling,Modifier));
   }
 }
 #endif

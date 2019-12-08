@@ -22,7 +22,7 @@ namespace lariov {
       char **columns;     // Pointers to columns
   } DataRec;
 
-  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag /*= ""*/) :
+  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag /*= ""*/, bool ApplyScaling,std::uint64_t Modifier) :
     fCachedStart(0,0), fCachedEnd(0,0) {
 
     fFolderName = name;
@@ -38,6 +38,8 @@ namespace lariov {
     fTypes.clear();
     fCachedRow = -1;
     fCachedChannel = 0;
+    fApplyScaling = ApplyScaling;
+    fModifier = Modifier;
     
     fMaximumTimeout = 4*60; //4 minutes
   }
@@ -231,9 +233,27 @@ namespace lariov {
   //returns true if an Update is performed, false if not
   bool DBFolder::UpdateData( DBTimeStamp_t raw_time) {
   
+   
+    DBTimeStamp_t modrawtime=raw_time;  
+      
+    if(fApplyScaling)
+    {
+    if(fModifier)    
+        {
+        std::cout << "+++ Applying TimeStamp Scaling: " << fModifier << std::endl; 
+        modrawtime=raw_time/fModifier;
+        modrawtime*=fModifier;   }  
+    }
+   
+   
+     
+    std::cout << " timestamps " << raw_time << " " << modrawtime << std::endl;
+    
+      
     //convert to IOVTimeStamp
-    IOVTimeStamp ts = TimeStampDecoder::DecodeTimeStamp(raw_time);
-
+    //IOVTimeStamp ts = TimeStampDecoder::DecodeTimeStamp(raw_time);
+    IOVTimeStamp ts = TimeStampDecoder::DecodeTimeStamp(modrawtime);
+    
     //check if cache is updated
     if (this->IsValid(ts)) return false;
 
@@ -244,10 +264,17 @@ namespace lariov {
 
     //get full url string
     std::stringstream fullurl;
-    fullurl << fURL << "/data?f=" << fFolderName
-            << "&t=" << ts.DBStamp();
-    if (fTag.length() > 0) fullurl << "&tag=" << fTag;
+    
+  //  fullurl << "file:///uboone/app/users/andrzejs/DBhacking_v08_00_00_28/detpmtgains.html"; 
+    
 
+    
+     fullurl << fURL << "/data?f=" << fFolderName
+             << "&t=" << ts.DBStamp();
+     if (fTag.length() > 0) fullurl << "&tag=" << fTag;
+
+    std::cout << " ++++ DB url "   << fullurl.str() << std::endl;
+    
     //get new dataset
     int status = -1;
     fCachedDataset = getDataWithTimeout(fullurl.str().c_str(), NULL, fMaximumTimeout, &err);
@@ -309,6 +336,8 @@ namespace lariov {
     }
     releaseTuple(tup);
 
+
+    
     return true;
   }
 
