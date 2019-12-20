@@ -22,7 +22,8 @@ namespace lariov {
       char **columns;     // Pointers to columns
   } DataRec;
 
-  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag /*= ""*/, bool ApplyScaling,std::uint64_t Modifier) :
+  
+  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag /*= ""*/) :
     fCachedStart(0,0), fCachedEnd(0,0) {
 
     fFolderName = name;
@@ -38,11 +39,25 @@ namespace lariov {
     fTypes.clear();
     fCachedRow = -1;
     fCachedChannel = 0;
+            
+    fMaximumTimeout = 4*60; //4 minutes
+    
+    //do not apply scaling if user has not asked for it explicitly.
+    fApplyScaling=false;
+  }
+  
+  
+  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag /*= ""*/, bool ApplyScaling,std::uint64_t Modifier) :
+    DBFolder(name,url,tag) {
+
     fApplyScaling = ApplyScaling;
     fModifier = Modifier;
     
-    fMaximumTimeout = 4*60; //4 minutes
+    
   }
+  
+  
+  
   
   DBFolder::~DBFolder() {
     if (fCachedDataset) releaseDataset(fCachedDataset);

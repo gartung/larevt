@@ -15,7 +15,8 @@ namespace lariov {
   class DBFolder {
   
     public:
-      DBFolder(const std::string& name, const std::string& url, const std::string& tag = "",bool ApplyScaling = false,std::uint64_t Modifier = 1);
+      DBFolder(const std::string& name, const std::string& url, const std::string& tag = "");
+      DBFolder(const std::string& name, const std::string& url, const std::string& tag,bool ApplyScaling,std::uint64_t Modifier);
       virtual ~DBFolder();
       
       int GetNamedChannelData(DBChannelID_t channel, const std::string& name, bool& data);
