@@ -16,7 +16,8 @@ namespace lariov {
   
     public:
       DBFolder(const std::string& name, const std::string& url, const std::string& tag = "");
-      DBFolder(const std::string& name, const std::string& url, const std::string& tag,bool ApplyScaling,std::uint64_t Modifier);
+      DBFolder(const std::string& name, const std::string& url, const std::string& tag,const bool ApplyScaling,const std::uint64_t Modifier);
+      DBFolder(const std::string& name, const std::string& url, const std::string& tag,const std::string OverrideDate);
       virtual ~DBFolder();
       
       int GetNamedChannelData(DBChannelID_t channel, const std::string& name, bool& data);
@@ -38,14 +39,14 @@ namespace lariov {
      
     private:  
       size_t GetTupleColumn( DBChannelID_t channel, const std::string& name, Tuple& tup );
+      DBTimeStamp_t GetTimeStampFromDate(const std::string& OverrideDate );
       
       bool IsValid(const IOVTimeStamp& time) const {
         if (time >= fCachedStart && time < fCachedEnd) return true;
 	else return false;
       }
-      
-      bool fApplyScaling;
-      DBTimeStamp_t   fModifier;
+ 
+ 
       std::string fURL;
       std::string fFolderName;
       std::string fTag;
@@ -57,8 +58,13 @@ namespace lariov {
       IOVTimeStamp               fCachedEnd;
       std::vector<std::string> fColumns;       //Column names
       std::vector<std::string> fTypes;         //Column types
-      int                      fCachedRow;     //Cache most recently retrieved row and channel numbers
+      int                      fCachedRow;     //Cache most recently retrieved row and channel number
       DBChannelID_t            fCachedChannel;      
+           
+      bool fApplyScaling;
+      DBTimeStamp_t   fModifier;
+      bool fTSOverride;
+      std::string fOverrideDate;
   };
 }
 

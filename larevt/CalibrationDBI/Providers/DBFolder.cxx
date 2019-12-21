@@ -44,6 +44,8 @@ namespace lariov {
     
     //do not apply scaling if user has not asked for it explicitly.
     fApplyScaling=false;
+    fTSOverride=false;
+    std::cout << "in the 3parameter constructor" << std::endl;
   }
   
   
@@ -53,9 +55,20 @@ namespace lariov {
     fApplyScaling = ApplyScaling;
     fModifier = Modifier;
     
+    std::cout << "in the 5parameter constructor" << std::endl;
     
   }
   
+  
+  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag,const std::string OverrideDate) :
+  DBFolder(name,url,tag) {
+
+    fTSOverride = true;
+    fOverrideDate = OverrideDate;
+    
+    std::cout << "in the 4parameter constructor" << std::endl;
+    
+  }
   
   
   
@@ -253,20 +266,23 @@ namespace lariov {
       
     if(fApplyScaling)
     {
-    if(fModifier)    
-        {
-        std::cout << "+++ Applying TimeStamp Scaling: " << fModifier << std::endl; 
-        modrawtime=raw_time/fModifier;
-        modrawtime*=fModifier;   }  
+        if(fModifier)    
+            {
+            std::cout << "+++ Applying TimeStamp Scaling: " << fModifier << std::endl; 
+            modrawtime=raw_time/fModifier;
+            modrawtime*=fModifier;   }  
     }
-   
+    else if(fTSOverride)
+    {
+     modrawtime=GetTimeStampFromDate(fOverrideDate);   
+    }
    
      
     std::cout << " timestamps " << raw_time << " " << modrawtime << std::endl;
     
       
     //convert to IOVTimeStamp
-    //IOVTimeStamp ts = TimeStampDecoder::DecodeTimeStamp(raw_time);
+    // IOVTimeStamp ts = TimeStampDecoder::DecodeTimeStamp(raw_time);
     IOVTimeStamp ts = TimeStampDecoder::DecodeTimeStamp(modrawtime);
     
     //check if cache is updated
@@ -353,6 +369,18 @@ namespace lariov {
     return true;
   }
 
+  
+  
+  // To Be implemented depending on Date Format.
+  DBTimeStamp_t DBFolder::GetTimeStampFromDate(const std::string& OverrideDate )
+  {
+    (void)OverrideDate;
+    DBTimeStamp_t newTS= 1469852626817472003; 
+    return newTS;
+    
+  }
+  
+  
 }//end namespace lariov
   
 #endif  
