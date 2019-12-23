@@ -45,7 +45,7 @@ namespace lariov {
     //do not apply scaling if user has not asked for it explicitly.
     fApplyScaling=false;
     fTSOverride=false;
-    std::cout << "in the 3parameter constructor" << std::endl;
+
   }
   
   
@@ -55,19 +55,18 @@ namespace lariov {
     fApplyScaling = ApplyScaling;
     fModifier = Modifier;
     
-    std::cout << "in the 5parameter constructor" << std::endl;
-    
+     
   }
   
   
-  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag,const std::string OverrideDate) :
+  //DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag,const std::string OverrideDate) :
+  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag,const DBTimeStamp_t OverrideTimeStamp) :
   DBFolder(name,url,tag) {
 
     fTSOverride = true;
-    fOverrideDate = OverrideDate;
-    
-    std::cout << "in the 4parameter constructor" << std::endl;
-    
+   // fOverrideDate = OverrideDate;
+    fOverrideTimeStamp=OverrideTimeStamp;
+      
   }
   
   
@@ -274,11 +273,11 @@ namespace lariov {
     }
     else if(fTSOverride)
     {
-     modrawtime=GetTimeStampFromDate(fOverrideDate);   
+     modrawtime=GetTimeStampFromTimeStamp(fOverrideTimeStamp);   
     }
    
      
-    std::cout << " timestamps " << raw_time << " " << modrawtime << std::endl;
+  //  std::cout << " timestamps " << raw_time << " " << modrawtime << std::endl;
     
       
     //convert to IOVTimeStamp
@@ -301,7 +300,7 @@ namespace lariov {
              << "&t=" << ts.DBStamp();
      if (fTag.length() > 0) fullurl << "&tag=" << fTag;
 
-    std::cout << " ++++ DB url "   << fullurl.str() << std::endl;
+  //  std::cout << " ++++ DB url "   << fullurl.str() << std::endl;
     
     //get new dataset
     int status = -1;
@@ -371,13 +370,29 @@ namespace lariov {
 
   
   
-  // To Be implemented depending on Date Format.
-  DBTimeStamp_t DBFolder::GetTimeStampFromDate(const std::string& OverrideDate )
+//   // To Be implemented depending on Date Format.
+//   DBTimeStamp_t DBFolder::GetTimeStampFromDate(const std::string& OverrideDate )
+//   {
+//     (void)OverrideDate;
+//     DBTimeStamp_t newTS= 1469852626817472003; 
+//     return newTS;
+//     
+//   }
+  
+  //makes sure the external timestamp coincides with the expected 19 digit timestamp.
+  DBTimeStamp_t DBFolder::GetTimeStampFromTimeStamp(const DBTimeStamp_t OverrideTimeStamp )
   {
-    (void)OverrideDate;
-    DBTimeStamp_t newTS= 1469852626817472003; 
-    return newTS;
-    
+      (void)OverrideTimeStamp;
+     //  std::cout << ".fcl timestamp " << OverrideTimeStamp << std::endl;
+       std::string timetmp = std::to_string(OverrideTimeStamp);
+       int modifier = 19 -  timetmp.length();
+     //  std::cout << "string length: " << timetmp.length() << " modifier " <<modifier << std::endl;
+       DBTimeStamp_t newTS= OverrideTimeStamp; 
+       for(int ix=0;ix<modifier;ix++)         //pad zeroes to get 19 digits.
+          newTS*=10;                  
+       
+       return newTS;
+      
   }
   
   
