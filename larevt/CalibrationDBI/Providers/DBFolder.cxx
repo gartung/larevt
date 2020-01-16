@@ -295,12 +295,20 @@ namespace lariov {
     //get full url string
     std::stringstream fullurl;
     
+   // std::stringstream newurl;
+   // newurl << "file:///uboone/app/users/andrzejs/DBhacking_v08_00_00_28/newdetpmtgains.html";
+      
     
-     fullurl << fURL << "/data?f=" << fFolderName
-             << "&t=" << ts.DBStamp();
-     if (fTag.length() > 0) fullurl << "&tag=" << fTag;
+//      fullurl << fURL << "/data?f=" << fFolderName
+//              << "&t=" << ts.DBStamp();
+//      if (fTag.length() > 0) fullurl << "&tag=" << fTag;
+    fullurl << "file:///uboone/app/users/andrzejs/DBhacking_v08_00_00_28/newdetpmtgains.html";
+    
+    
+    std::cout << " ++++ DB url "   << fullurl.str() << std::endl;
+    
 
-  //  std::cout << " ++++ DB url "   << fullurl.str() << std::endl;
+   // std::cout << " ++++ DB url "   << newurl.str() << std::endl;  
     
     //get new dataset
     int status = -1;
@@ -319,7 +327,7 @@ namespace lariov {
 
     //update info about cached data
     fNRows = getNtuples(fCachedDataset) - kNUMBER_HEADER_ROWS;
-    //std::cout<<"Retrieved "<<fNRows<<" rows from "<<fullurl.str()<<std::endl;
+    std::cout<<"Retrieved "<<fNRows<<" rows from "<<fullurl.str()<<std::endl;
     if (fNRows < 1) {
       std::stringstream msg;
       msg << "Time " << ts.DBStamp() << ": Data not found in database.";

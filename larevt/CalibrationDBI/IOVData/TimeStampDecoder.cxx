@@ -14,11 +14,13 @@ namespace lariov {
         
     std::string time = std::to_string(ts);
 
+    
     //microboone stores timestamp as ns from epoch, so there should be 19 digits.
     if (time.length() == 19) {
       //make timestamp conform to database precision
       time = time.substr(0, 10+kMAX_SUBSTAMP_LENGTH);
 
+      
       //insert decimal point
       time.insert(10,".");
 
