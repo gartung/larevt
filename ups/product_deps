@@ -7,7 +7,7 @@ fcldir product_dir job
 #
 product         version
 lardata		v08_02_00_06
-libwda          v2_27_1
+libwda          v2_26_0
 cetbuildtools	v7_06_04	-	only_for_build
 end_product_list
 

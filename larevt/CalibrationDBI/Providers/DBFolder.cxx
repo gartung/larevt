@@ -45,7 +45,7 @@ namespace lariov {
     //do not apply scaling if user has not asked for it explicitly.
     fApplyScaling=false;
     fTSOverride=false;
-
+    fApplyOverrideURL=false;
   }
   
   
@@ -69,6 +69,14 @@ namespace lariov {
       
   }
   
+  DBFolder::DBFolder(const std::string& name, const std::string& url, const std::string& tag,const std::string OverrideURL) :
+    DBFolder(name,url,tag) {
+
+    fApplyOverrideURL = true;
+    // fOverrideDate = OverrideDate;                                                                                                                                                              
+    fOverrideURL=OverrideURL;
+
+  }
   
   
   DBFolder::~DBFolder() {
@@ -298,11 +306,14 @@ namespace lariov {
    // std::stringstream newurl;
    // newurl << "file:///uboone/app/users/andrzejs/DBhacking_v08_00_00_28/newdetpmtgains.html";
       
-    
-//      fullurl << fURL << "/data?f=" << fFolderName
-//              << "&t=" << ts.DBStamp();
-//      if (fTag.length() > 0) fullurl << "&tag=" << fTag;
-    fullurl << "file:///uboone/app/users/andrzejs/DBhacking_v08_00_00_28/newdetpmtgains.html";
+    if(!fApplyOverrideURL){
+      fullurl << fURL << "/data?f=" << fFolderName
+              << "&t=" << ts.DBStamp();
+      if (fTag.length() > 0) fullurl << "&tag=" << fTag;
+    }
+
+    else
+      fullurl << "file://" << fOverrideURL;  // /uboone/app/users/andrzejs/DBhacking_v08_00_00_28/newdetpmtgains.html";
     
     
     std::cout << " ++++ DB url "   << fullurl.str() << std::endl;
